@@ -7,6 +7,7 @@ import (
 
 	"100.GO/internal/http/handler"
 	"100.GO/internal/infrastructura/repository/mongodb"
+	"100.GO/internal/infrastructura/repository/redis"
 	"100.GO/internal/service"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -31,16 +32,18 @@ func NewStorage() (*mongo.Client, *mongo.Collection, error) {
 	return client, collection, nil
 }
 
-func Handler() *handler.UserHandler {
+func Handler() (*handler.UserHandler) {
+	redisdb := redis.NewRedisClient("users:6379", "", 0)
 	client, collection, err := NewStorage()
 	if err != nil {
 		log.Println("connection mongodb error")
 	}
-	repo := mongodb.NewUserMongodb(client,collection)
+	repo := mongodb.NewUserMongodb(client, collection)
 
 	service := service.NewUserService(repo)
 
-	handler := handler.NewUserHandler(service)
+	handler := handler.NewUserHandler(service,redisdb)
+
 
 	return handler
 }

@@ -27,8 +27,8 @@ func (r *RedisClient) SetHash(key string, values map[string]interface{}) error {
 
 func (r *RedisClient) VerifyEmail(email string, usercode int64) (*user.CreateUser, error) {
 	code, err := r.Client.HGet(email, "code").Int64()
+	fmt.Println(code)
 	if err != nil {
-		fmt.Println(code, err)
 		return nil, fmt.Errorf("error HGET:%v", err)
 	}
 	if code == usercode {

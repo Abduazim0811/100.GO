@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -33,8 +34,8 @@ type UserHandler struct {
 	redis   *redis.RedisClient
 }
 
-func NewUserHandler(service *service.UserService) *UserHandler {
-	return &UserHandler{service: service}
+func NewUserHandler(service *service.UserService, redis *redis.RedisClient) *UserHandler {
+	return &UserHandler{service: service, redis: redis}
 }
 
 // CreateUser godoc
@@ -106,6 +107,7 @@ func (u *UserHandler) VerifyCode(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request"})
 		return
 	}
+	fmt.Println(req.Code)
 	user, err := u.redis.VerifyEmail(req.Email, int64(req.Code))
 	if err != nil {
 		log.Println("error code")
