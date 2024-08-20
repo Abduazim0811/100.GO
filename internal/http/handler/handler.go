@@ -71,6 +71,7 @@ func (u *UserHandler) CreateUser(c *gin.Context) {
 		"lastname":  req.Lastname,
 		"email":     req.Email,
 		"password":  hashedpassword,
+		"code":		 code,
 	}
 
 	if u.redis == nil {
