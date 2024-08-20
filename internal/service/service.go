@@ -42,3 +42,7 @@ func (u *UserService) Updateorigin(id primitive.ObjectID, req origin.CreateOrigi
 func (u *UserService) Deleteorigin(id primitive.ObjectID) error {
 	return u.Repo.DeleteOrigin(id)
 }
+
+func (u *UserService) OriginGetall()([]*origin.CreateOrigin, error){
+	return u.Repo.OriginGetAll()
+}

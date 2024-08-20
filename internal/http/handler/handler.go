@@ -287,7 +287,7 @@ func (u *UserHandler) EnableCORS() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-		res, err := u.service.OriginGetAll(c)
+		res, err := u.service.OriginGetall()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -304,4 +304,10 @@ func (u *UserHandler) EnableCORS() gin.HandlerFunc {
 		}
 		c.Next()
 	}
+}
+
+func (u *UserHandler) CorsMessage(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"Message": "Congrats buddy, you are now one of the trusted persons",
+	})
 }
